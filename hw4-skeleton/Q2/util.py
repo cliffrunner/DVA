@@ -115,7 +115,7 @@ def partition_classes(X, y, split_attribute, split_val):
         y_right = [_ for i, _ in enumerate(y) if X[i][split_attribute]>split_val]
 
     
-    return (X_left, X_right, y_left, y_right)
+    return X_left, X_right, y_left, y_right
 
     
 def information_gain(previous_y, current_y):
@@ -149,6 +149,8 @@ def information_gain(previous_y, current_y):
     
 def find_best_split(X,y):
     best_gain = 0
+    best_attr = None
+    best_val = None
     n_features = len(X[0])
 
     for i, col in enumerate(range(n_features)):
@@ -162,6 +164,6 @@ def find_best_split(X,y):
             
             gain = information_gain(y, [y_left, y_right])
             if gain >= best_gain:
-                best_gain = gain
+                best_gain, best_attr, best_val = gain, i, val
     
-    return best_gain
+    return best_gain, best_attr, best_val

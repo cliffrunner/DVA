@@ -26,7 +26,7 @@ Do NOT change any part of the main function APART from the forest_size parameter
 """
 
 class RandomForest(object):
-    num_trees = 10
+#    num_trees = 10
     decision_trees = []
 
     # the bootstrapping datasets for trees
@@ -63,7 +63,7 @@ class RandomForest(object):
     def bootstrapping(self, XX):
         # Initializing the bootstap datasets for each tree
         for i in range(self.num_trees):
-            data_sample, data_label = self._bootstrapping(XX, len(XX))
+            data_sample, data_label = self._bootstrapping(XX, int(0.8*len(XX)))
             self.bootstraps_datasets.append(data_sample)
             self.bootstraps_labels.append(data_label)
 
@@ -71,6 +71,11 @@ class RandomForest(object):
     def fitting(self):
         # TODO: Train `num_trees` decision trees using the bootstraps datasets
         # and labels by calling the learn function from your DecisionTree class.
+        
+        for i, dataset in enumerate(self.bootstraps_datasets):
+            X = [row[:-1] for row in dataset]
+            y = [row[-1] for row in dataset]
+            self.decision_trees[i].learn(X,y)
         
         pass      
 
@@ -129,7 +134,7 @@ def main():
 
     # TODO: Initialize according to your implementation
     # VERY IMPORTANT: Minimum forest_size should be 10
-    forest_size = 10
+    forest_size = 5
     
     # Initializing a random forest.
     randomForest = RandomForest(forest_size)
